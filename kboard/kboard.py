@@ -42,8 +42,11 @@ def serial_ports():
 
 async def send_to_serial(bytesin):
     for port in ports:
-        arduino = serial.Serial(port=port, baudrate=115200, timeout=.1)
-        arduino.write(bytes(bytesin, "utf-8"))
+        try:
+            arduino = serial.Serial(port=port, baudrate=115200, timeout=.1)
+            arduino.write(bytes(bytesin, "utf-8"))
+        except serial.SerialException:
+            pass
 
 
 def on_press(key):
@@ -56,12 +59,11 @@ def on_release(key):
     asyncio.run(send_to_serial(RELEASED))
 
 
-print(serial_ports())
-print("Listening...")
-
 # Collect events until released
 with keyboard.Listener(
         on_press=on_press,
         on_release=on_release) as listener:
     ports = serial_ports()
+    print(ports)
+    print("Listening...")
     listener.join()
