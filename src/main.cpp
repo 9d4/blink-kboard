@@ -3,8 +3,8 @@
 #include "async.h"
 
 // constansts
-const int PRESSED = 1;
-const int RELEASED = 0;
+const char PRESSED = 1;
+const char RELEASED = 0;
 const unsigned long debounceTime = 50;
 
 void blink();
@@ -43,14 +43,13 @@ void loop()
       // if the key is holding, the light will not be flickering
       // the light will just on
       if ((millis() - lastOn) < debounceTime)
-      {
+      { 
         ledON();
       }
       // if the key is pressed, the light will on
       else
       {
         ledON();
-        // blink();
       }
 
       lastOn = millis();
@@ -71,12 +70,4 @@ void ledON()
 void ledOFF()
 {
   digitalWrite(D4, HIGH);
-}
-
-void blink()
-{
-  ledON();
-
-  // TO OFF
-  asyncEngine.setTimeout(ledOFF, 10);
 }
